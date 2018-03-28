@@ -17,18 +17,20 @@ $(function(){ "use strict";
 
     function checkAccount(client,token){
         
-        var media = getMedia(token);
-        if(media.data.length == 0){
-            console.log("Nothing to wotk with");
-            return;
-        }
-        for(var i=0; i<media.data.length; i++){
-            if(media.data[i].comments.count > 0) checkComments(media.data[i].id,token);
-        }
+        //var media = getMedia(token);
+        $.when(getMedia(token)).done(function(media){
+            if(media.data.length == 0){
+                console.log("Nothing to wotk with");
+                return;
+            }
+            for(var i=0; i<media.data.length; i++){
+                if(media.data[i].comments.count > 0) checkComments(media.data[i].id,token);
+            }
+        });
     }
 
     function getMedia(token){
-        $.ajax({
+        var res = $.ajax({
         url: 'https://api.instagram.com/v1/users/self/media/recent/?access_token=' + token,
         dataType: 'json',
         type: 'GET',
@@ -57,9 +59,11 @@ $(function(){ "use strict";
 
     function checkComments(id,token){
         
-        var comments = getComments(id,token);
-        for(var i=0; i<comments.data.length; i++){
+        //var comments = getComments(id,token);
+        $.when(getComments(id,token)).done(function(comments){
+            for(var i=0; i<comments.data.length; i++){
             console.log(comments.data[i].text);
-        }
+            }
+        });
     }
 });
