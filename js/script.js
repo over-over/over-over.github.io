@@ -82,7 +82,7 @@ $(function(){ "use strict";
                         var words = comments.data[i].text.split(" ");
                         for(var j=0; j<words.length; j++){
                             if(response.filter[0].indexOf(words[j]) > -1){
-                                addCommentToTable(comments.data[i]);
+                                addCommentToTable(id,comments.data[i]);
                             }
                         }
                     }

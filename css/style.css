@@ -47,6 +47,8 @@ body{
 .slide_input--delete{
     display: none;
     background-color: #fb3b72;
+    border-color: transparent;
+    color: #fff;
 }
 .slide_input--delete:focus{
     box-shadow: 0 0 0.5px 3px #ff006470;
