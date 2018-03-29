@@ -13,7 +13,10 @@ $(function(){ "use strict";
             e.preventDefault();
             console.log("start!");
             token = $(".js-token").val();
-
+            commentsTable = [];
+            commentsData = [];
+            $(".js-table table").remove();
+            $delete.hide();
             checkAccount(token);
             
         });
