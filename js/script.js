@@ -1,7 +1,10 @@
 $(function(){ "use strict";
 
     var $check = $(".js-check");
+    var $delete = $(".js-delete");
     var commentsTable = [];
+    var commentsData = [];
+    var token = "";
 
     if($check.length > 0){
 
@@ -9,20 +12,26 @@ $(function(){ "use strict";
 
             e.preventDefault();
             console.log("start!");
-            var client = $(".js-client").val();
-            var token = $(".js-token").val();
+            token = $(".js-token").val();
 
-            checkAccount(client,token);
+            checkAccount(token);
             
-        })
+        });
+
+        $delete.on("click", function(){
+
+            for(var i=0; i<commentsData.length; i++){
+                deleteComment(commentsData[i].media,commentsData[i].comment,token);
+            }
+            $(".js-table").append("<p>Всё чисто!</p>");
+        });
     }
 
-    function checkAccount(client,token){
+    function checkAccount(token){
         
         //var media = getMedia(token);
         $.when(getMedia(token)).done(function(media){
             if(media.data.length == 0){
-                console.log("Nothing to wotk with");
                 return;
             }
             for(var i=0; i<media.data.length; i++){
@@ -37,7 +46,6 @@ $(function(){ "use strict";
         dataType: 'json',
         type: 'GET',
         success: function( response ) {
-          //return response;
         },
         error: function( jqXHR, textStatus, errorThrown ) {
           console.log( jqXHR, textStatus, errorThrown );
@@ -51,7 +59,6 @@ $(function(){ "use strict";
         dataType: 'json',
         type: 'GET',
         success: function( response ) {
-          //return response;
         },
         error: function( jqXHR, textStatus, errorThrown ) {
           console.log( jqXHR, textStatus, errorThrown );
@@ -61,10 +68,8 @@ $(function(){ "use strict";
 
     function checkComments(id,token){
         
-        //var comments = getComments(id,token);
         $.when(getComments(id,token)).done(function(comments){
             if(comments.data.length == 0){
-                console.log("Nothing to wotk with");
                 return;
             }
 
@@ -74,10 +79,9 @@ $(function(){ "use strict";
                 type: 'GET',
                 success: function( response ) {
                     for(var i=0; i<comments.data.length; i++){
-                        console.log(comments.data[i].text);
                         var words = comments.data[i].text.split(" ");
                         for(var j=0; j<words.length; j++){
-                            if(response.indexOf(words[j]) > -1){
+                            if(response.filter[0].indexOf(words[j]) > -1){
                                 addCommentToTable(comments.data[i]);
                             }
                         }
@@ -92,14 +96,16 @@ $(function(){ "use strict";
         });
     }
 
-    function addCommentToTable(data){
+    function addCommentToTable(id,data){
+        var table_data = {"media": id, "comment": data.id};
         var table_row = "<tr>" + 
         "<td>" + data.id + "</td>" +
         "<td>" + data.full_name + "</td>" +
-        "<td><a href='" + data.from.profile_picture + "'>Ссылка</a></td>" + 
+        "<td>" + data.username + "</td>" +
         "<td>" + data.text + "</td>" +
         "</tr>";
         commentsTable.push(table_row);
+        commentsData.push(table_data);
     }
 
     function createTable(){
@@ -107,12 +113,27 @@ $(function(){ "use strict";
             $(".js-table").append("<table><tr>" +
             "<th>ID комментария</th>" +
             "<th>Имя комментатора</th>" +
-            "<th>Ссылка на комментарий</th>" +
+            "<th>Никнейм комментатора</th>" +
             "<th>Текст комментария</th>" +
             "</tr></table>");
             for(var i=0; i<commentsTable.length; i++){
                 $(".js-table table").append(commentsTable[i]);
             }
+            $delete.show();
         }
+    }
+
+    function deleteComment(media,comment,token){
+        $.ajax({
+        url: 'https://api.instagram.com/v1/media/'+ media +'/comments/'+ comment +'?access_token=' + token,
+        dataType: 'json',
+        method: 'POST',
+    	data: {_method: 'delete' },
+        success: function( response ) {
+        },
+        error: function( jqXHR, textStatus, errorThrown ) {
+          console.log( jqXHR, textStatus, errorThrown );
+        }
+      });
     }
 });

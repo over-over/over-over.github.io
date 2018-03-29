@@ -4,29 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&amp;subset=cyrillic" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/style.css" />
     <title>My Page</title>
 </head>
 <body>
     <header class="header">
         <div class="container">
-            <h1>Пример удаления матерных комментариев</h1>
+            <h1 class="header_title">Пример удаления матерных комментариев</h1>
         </div>
     </header>
     <section class="slide">
         <div class="container">
             <div class="slide_inputs">
                 <div class="slide_input-wrapper">
-                    <input type="text" class="slide_input js-client" placeholder="Client ID">
-                </div>
-                <div class="slide_input-wrapper">
                     <input type="text" class="slide_input js-token" placeholder="Token">
                 </div>
                 <div class="slide_input-wrapper">
-                    <button class="slide_btn js-check">Проверить комментарии</button>
+                    <button class="slide_input slide_input--btn js-check">Проверить комментарии</button>
                 </div>
             </div>
             <div class="slide_table-wrapper js-table">
-
+                <div class="slide_input-wrapper">
+                    <button class="slide_input slide_input--delete js-delete">Удалить комментарии?</button>
+                </div>
             </div>
         </div>
     </section>
