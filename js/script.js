@@ -30,12 +30,12 @@ $(function(){ "use strict";
     }
 
     function getMedia(token){
-        var res = $.ajax({
+        return $.ajax({
         url: 'https://api.instagram.com/v1/users/self/media/recent/?access_token=' + token,
         dataType: 'json',
         type: 'GET',
         success: function( response ) {
-          return response;
+          //return response;
         },
         error: function( jqXHR, textStatus, errorThrown ) {
           console.log( jqXHR, textStatus, errorThrown );
@@ -44,12 +44,12 @@ $(function(){ "use strict";
     }
 
     function getComments(id,token){
-        $.ajax({
+        return $.ajax({
         url: 'https://api.instagram.com/v1/media/' + id + '/comments?access_token=' + token,
         dataType: 'json',
         type: 'GET',
         success: function( response ) {
-          return response;
+          //return response;
         },
         error: function( jqXHR, textStatus, errorThrown ) {
           console.log( jqXHR, textStatus, errorThrown );
