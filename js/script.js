@@ -86,10 +86,10 @@ $(function(){ "use strict";
                         for(var j=0; j<words.length; j++){
                             if(response.filter[0].indexOf(words[j]) > -1){
                                 addCommentToTable(id,comments.data[i]);
+                                updateTable();
                             }
                         }
                     }
-                    createTable();
                 },
                 error: function( jqXHR, textStatus, errorThrown ) {
                     console.log( jqXHR, textStatus, errorThrown );
@@ -111,19 +111,17 @@ $(function(){ "use strict";
         commentsData.push(table_data);
     }
 
-    function createTable(){
-        if(commentsTable.length > 0){
+    function updateTable(){
+        if($(".js-table table").length == 0){
             $(".js-table").append("<table><tr>" +
             "<th>ID комментария</th>" +
             "<th>Имя комментатора</th>" +
             "<th>Никнейм комментатора</th>" +
             "<th>Текст комментария</th>" +
             "</tr></table>");
-            for(var i=0; i<commentsTable.length; i++){
-                $(".js-table table").append(commentsTable[i]);
-            }
-            $delete.show();
         }
+        $(".js-table table").append(commentsTable[commentsTable.length - 1]);
+        $delete.show();
     }
 
     function deleteComment(media,comment,token){
